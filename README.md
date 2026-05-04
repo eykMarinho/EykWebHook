@@ -35,7 +35,7 @@ public OnPlayerConnect(playerid)
     new name[MAX_PLAYER_NAME];
     GetPlayerName(playerid, name, sizeof name);
     
-    new json[1024];
+    new json[DISCORDWH_MAX_JSON];
     DiscordWH_BuildEmbed(
         json, sizeof json,
         "",

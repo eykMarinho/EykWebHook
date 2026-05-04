@@ -14,7 +14,7 @@ Uma biblioteca leve para enviar mensagens e embeds via webhooks Discord para SA-
 
 ## Uso Básico
 
-### Exemplo Completo (Avg.pwn)
+### Exemplo
 ```pawn
 
 stock DiscordWH_StartupTest()
@@ -75,16 +75,6 @@ public OnPlayerConnect(playerid)
     );
     DiscordWH_SendJson(DISCORDWH_GetWebhook(0), json);
 }
-
-## Configuração Opcional
-Antes de incluir a biblioteca, você pode ajustar esses defines para suas necessidades:
-
-```pawn
-#define DISCORDWH_QUEUE_SIZE (32)   // Tamanho da fila de requisições
-#define DISCORDWH_MAX_POST (4096)     // Tamanho máximo do payload
-#define DISCORDWH_MAX_HOOKS (8)       // Número máximo de webhooks
-#define DISCORDWH_MAX_URL (256)        // Tamanho máximo da URL do webhook
-#include <EykWebHook>
 ```
 
 ## Funcionamento

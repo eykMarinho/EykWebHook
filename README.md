@@ -81,8 +81,5 @@ public OnPlayerConnect(playerid)
 - A biblioteca usa a função `HTTP()` padrão do SA-MP
 - Todas as requisições são enfileiradas para evitar rate limits
 - Em caso de erro 429 (Too Many Requests), a biblioteca tenta novamente automaticamente
-
-## Otimizações
-- Baixo consumo de memória (valores padrão otimizados)
 - Sem dependências de plugins ou includes adicionais
 - Funciona em SA-MP e open.mp

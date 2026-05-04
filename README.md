@@ -14,6 +14,39 @@ Uma biblioteca leve para enviar mensagens e embeds via webhooks Discord para SA-
 
 ## Uso Básico
 
+### Exemplo Completo (Avg.pwn)
+```pawn
+
+stock DiscordWH_StartupTest()
+{
+    if (DiscordWH_CountWebhooks() <= 0) return 0;
+
+    new msg[192];
+    for (new i = 1; i <= 10; ++i)
+    {
+        format(msg, sizeof msg, "Startup test #%d | tick=%d", i, GetTickCount());
+        DiscordWH_BroadcastMessage(msg, "EykWebHook");
+    }
+
+    DiscordWH_BroadcastEmbed("", "Startup embed", "Embed funcionando", 0x57F287, "Avg.pwn");
+    return 1;
+}
+
+public OnGameModeInit()
+{
+    DiscordWH_SetWebhook(0, "https://discord.com/api/webhooks/SEU_ID/SEU_TOKEN");
+    DiscordWH_StartupTest();
+    return 1;
+}
+
+forward DiscordWH_OnResponse(requestid, responseCode, data[]);
+public DiscordWH_OnResponse(requestid, responseCode, data[])
+{
+    printf("[DiscordWH] req=%d code=%d body=%s", requestid, responseCode, data);
+    return 1;
+}
+```
+
 ### Enviar Mensagem Simples
 ```pawn
 public OnGameModeInit()
@@ -42,7 +75,6 @@ public OnPlayerConnect(playerid)
     );
     DiscordWH_SendJson(DISCORDWH_GetWebhook(0), json);
 }
-```
 
 ## Configuração Opcional
 Antes de incluir a biblioteca, você pode ajustar esses defines para suas necessidades:

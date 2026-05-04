@@ -450,30 +450,34 @@ stock DiscordWH_BuildEmbed(dest[], destSize, const content[], const title[], con
 
 stock DiscordWH_SendMessage(const webhookUrl[], const content[], const username[] = "", const avatarUrl[] = "", bool:tts = false)
 {
+	if (content[0] == '\0' && username[0] == '\0' && avatarUrl[0] == '\0') return DISCORDWH_ERR_EMPTY_CONTENT;
+
 	#if DISCORDWH_MODE == 0
 		new post[DISCORDWH_MAX_POST];
-		if (!DISCORDWH__BuildFormMessage(post, sizeof post, content, username, avatarUrl, tts)) return -1;
+		if (!DISCORDWH__BuildFormMessage(post, sizeof post, content, username, avatarUrl, tts)) return DISCORDWH_ERR_EMPTY_CONTENT;
 		return DiscordWH_SendJson(webhookUrl, post);
 	#else
 		new json[DISCORDWH_MAX_JSON];
-		if (!DiscordWH_BuildMessage(json, sizeof json, content, username, avatarUrl, tts)) return -1;
+		if (!DiscordWH_BuildMessage(json, sizeof json, content, username, avatarUrl, tts)) return DISCORDWH_ERR_EMPTY_CONTENT;
 		return DiscordWH_SendJson(webhookUrl, json);
 	#endif
 }
 
 stock DiscordWH_SendEmbed(const webhookUrl[], const content[], const title[], const description[], color = 0x2F3136, const username[] = "", const avatarUrl[] = "")
 {
+	if (title[0] == '\0' && description[0] == '\0' && content[0] == '\0' && username[0] == '\0' && avatarUrl[0] == '\0') return DISCORDWH_ERR_EMPTY_CONTENT;
+
 	new json[DISCORDWH_MAX_JSON];
-	if (!DiscordWH_BuildEmbed(json, sizeof json, content, title, description, color, username, avatarUrl)) return -1;
+	if (!DiscordWH_BuildEmbed(json, sizeof json, content, title, description, color, username, avatarUrl)) return DISCORDWH_ERR_EMPTY_CONTENT;
 	#if DISCORDWH_MODE == 0
 		new post[DISCORDWH_MAX_POST];
 		new tmpContent[2] = ".";
-		if (!DISCORDWH__BuildFormMessage(post, sizeof post, (content[0] != '\0') ? content : tmpContent, username, avatarUrl, false)) return -1;
+		if (!DISCORDWH__BuildFormMessage(post, sizeof post, (content[0] != '\0') ? content : tmpContent, username, avatarUrl, false)) return DISCORDWH_ERR_EMPTY_CONTENT;
 
 		new pos = strlen(post);
-		if (!DISCORDWH__Append(post, sizeof post, pos, "&payload_json=")) return -1;
+		if (!DISCORDWH__Append(post, sizeof post, pos, "&payload_json=")) return DISCORDWH_ERR_BODY_TOO_LONG;
 
-		if (!DISCORDWH__AppendUrlEncoded(post, sizeof post, pos, json)) return -1;
+		if (!DISCORDWH__AppendUrlEncoded(post, sizeof post, pos, json)) return DISCORDWH_ERR_BODY_TOO_LONG;
 		return DiscordWH_SendJson(webhookUrl, post);
 	#else
 		return DiscordWH_SendJson(webhookUrl, json);
@@ -689,15 +693,15 @@ stock DiscordWH_SetWebhookList(const list[])
 
 stock DiscordWH_SendMessageTo(hookid, const content[], const username[] = "", const avatarUrl[] = "", bool:tts = false)
 {
-	if (hookid < 0 || hookid >= DISCORDWH_MAX_HOOKS) return -1;
-	if (!DISCORDWH__HookSet[hookid]) return -1;
+	if (hookid < 0 || hookid >= DISCORDWH_MAX_HOOKS) return DISCORDWH_ERR_INVALID_HOOK;
+	if (!DISCORDWH__HookSet[hookid]) return DISCORDWH_ERR_NOT_SET;
 	return DiscordWH_SendMessage(DISCORDWH__HookUrl[hookid], content, username, avatarUrl, tts);
 }
 
 stock DiscordWH_SendEmbedTo(hookid, const content[], const title[], const description[], color = 0x2F3136, const username[] = "", const avatarUrl[] = "")
 {
-	if (hookid < 0 || hookid >= DISCORDWH_MAX_HOOKS) return -1;
-	if (!DISCORDWH__HookSet[hookid]) return -1;
+	if (hookid < 0 || hookid >= DISCORDWH_MAX_HOOKS) return DISCORDWH_ERR_INVALID_HOOK;
+	if (!DISCORDWH__HookSet[hookid]) return DISCORDWH_ERR_NOT_SET;
 	return DiscordWH_SendEmbed(DISCORDWH__HookUrl[hookid], content, title, description, color, username, avatarUrl);
 }
 

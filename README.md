@@ -9,12 +9,8 @@ Uma biblioteca leve para enviar mensagens e embeds via webhooks Discord para SA-
 - Modos de payload JSON e form-data
 - Gerenciamento de múltiplos webhooks
 
-## Instalação
-1. Copie o arquivo `EykWebHook.inc` para a pasta `qawno\include` (ou sua pasta de includes padrão)
-2. Inclua no seu gamemode:
-   ```pawn
-   #include <EykWebHook>
-   ```
+## Testes
+<img width="393" height="427" alt="image" src="https://github.com/user-attachments/assets/f6e4e32b-3c29-4ae9-bbae-a02f1d77fdce" />
 
 ## Uso Básico
 
